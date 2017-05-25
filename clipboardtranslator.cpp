@@ -11,13 +11,14 @@ ClipBoardTranslator::ClipBoardTranslator(QWidget *parent) :
     ui->setupUi(this);
     connect(QApplication::clipboard(),&QClipboard::dataChanged,this,&ClipBoardTranslator::onClipBoardChange);
 
-
     translator=new WordTranslator(this);
     babLatranslatorengine *engin=new babLatranslatorengine(this);
     translator->setEngine(*engin);
     connect(translator,&WordTranslator::translationFinished,
             [this](QString translated){
-            ui->textEdit->setPlainText(translated);
+            //delete semicolon at end
+            QString words=translated.left(translated.size()-1);
+            ui->textEdit->setText(translated.replace(';',",\n"));
     });
 }
 

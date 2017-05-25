@@ -11,12 +11,9 @@ public:
     babLatranslatorengine(QObject *parent=nullptr);
 public slots:
     virtual void  translateWord(QString wordToTranslate)override;
-signals:
-    void downloadFinished();
 private:
     QString createUrl(QString wordToTranslate);
     void  downloadHtml(QString url);
-    QString findTranslatedWord();
     QString findTranslatedWords();
     QString getWordsFromList(QString html);
 private:

@@ -10,22 +10,22 @@ babLatranslatorengine::babLatranslatorengine(QObject *parent):TranslatorEngine(p
     connect(manager.get(),&QNetworkAccessManager::finished,
             [this](QNetworkReply*reply)
     {
-        QByteArray arr=reply->readAll();
-        downloadedHtml=arr;
+        if(!reply->error())
+        {
+            QByteArray arr=reply->readAll();
+            downloadedHtml=arr;
+            translationFinished(findTranslatedWords());
+        }else
+        {
+             translationFinished("Network connection not found");
+        }
         reply->deleteLater();
-        emit downloadFinished();
-
-    });
-    connect(this,&babLatranslatorengine::downloadFinished,[this]()
-    {
-        emit translationFinished(findTranslatedWords());
     });
 }
 
 void babLatranslatorengine::translateWord(QString wordToTranslate)
 {
     downloadHtml(createUrl(wordToTranslate));
-
 }
 
 QString babLatranslatorengine::createUrl(QString wordToTranslate)
@@ -39,32 +39,19 @@ void babLatranslatorengine::downloadHtml(QString url)
     manager->get(QNetworkRequest(QUrl(url)));
 }
 
-QString babLatranslatorengine::findTranslatedWord()
-{
-    auto index=downloadedHtml.indexOf("<ul class='sense-group-results'>");
-    if(index==-1)return tr("Translation not found\n");
-    auto subStr=downloadedHtml.mid(index,120);
-    auto index2=subStr.indexOf("</a>");
-    if(index2==-1)return tr("Translation not found\n");
-    auto inx=index2;
-    while(inx>=0&&subStr[inx]!='>')
-        inx--;
-    return subStr.mid(inx+1,index2-inx-1);
-}
-
 QString babLatranslatorengine::findTranslatedWords()
 {
     QString words="";
     QString wholehtml=downloadedHtml;
     const QString pattern="<ul class='sense-group-results'>";
-    const QString endOfList="</ul>";
+    const QString endOfListTag="</ul>";
     int begin=0;
     int end=0;
     while(begin!=-1)
     {
-         begin=wholehtml.indexOf(pattern,end+endOfList.length()+1);
-         end=wholehtml.indexOf(endOfList,begin);
-         auto html=wholehtml.mid(begin,end-begin+1+endOfList.length());
+         begin=wholehtml.indexOf(pattern,end+endOfListTag.length()+1);
+         end=wholehtml.indexOf(endOfListTag,begin);
+         auto html=wholehtml.mid(begin,end-begin+1+endOfListTag.length());
          words+=getWordsFromList(html);
     }
 
@@ -76,10 +63,12 @@ QString babLatranslatorengine::findTranslatedWords()
 QString babLatranslatorengine::getWordsFromList(QString html)
 {
     QString words="";
+    const QString endOfTag="</a>";
     int index2=0;
     while(index2!=-1)
     {
-        index2=html.indexOf("</a>",index2+4);
+
+        index2=html.indexOf(endOfTag,index2+endOfTag.length());//plus
         if(index2==-1)break;
         auto inx=index2;
         while(inx>=0&&html[inx]!='>')

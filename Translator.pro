@@ -28,16 +28,22 @@ SOURCES += main.cpp\
     translatorengine.cpp \
     bab_latranslatorengine.cpp \
     clipboardtranslator.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    applicationdescription.cpp
 
 HEADERS  += \
     wordtranslator.h \
     translatorengine.h \
     bab_latranslatorengine.h \
     clipboardtranslator.h \
-    mainwindow.h
+    mainwindow.h \
+    applicationdescription.h
 
 FORMS    += \
     clipboardtranslator.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    applicationdescription.ui
 RC_FILE=translator.rc
+
+RESOURCES += \
+    resources.qrc
