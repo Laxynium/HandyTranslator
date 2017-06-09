@@ -9,12 +9,14 @@ WordTranslator::WordTranslator(QObject *parent):QObject(parent)
 
 void WordTranslator::translateWord(QString wordToTranslate)
 {
+    //delete attached to word punctuation marks
     wordToTranslate.remove('.');
     wordToTranslate.remove(',');
     wordToTranslate.remove(':');
     wordToTranslate.remove('"');
     wordToTranslate.remove('?');
     wordToTranslate=wordToTranslate.simplified();
+
     m_Engin->translateWord(wordToTranslate);
     connect(m_Engin,&TranslatorEngine::translationFinished,[this](QString translated)
     {

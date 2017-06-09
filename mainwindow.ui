@@ -25,7 +25,7 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>Application description and instruction</string>
+      <string>Opisz aplikacji i instrukcja</string>
      </property>
     </widget>
    </item>
@@ -43,7 +43,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Show translator window</string>
+      <string>Pokaż tłumaczenia</string>
      </property>
     </widget>
    </item>

@@ -12,7 +12,7 @@ ClipBoardTranslator::ClipBoardTranslator(QWidget *parent) :
     connect(QApplication::clipboard(),&QClipboard::dataChanged,this,&ClipBoardTranslator::onClipBoardChange);
 
     translator=new WordTranslator(this);
-    babLatranslatorengine *engin=new babLatranslatorengine(this);
+    bab_laTranslatorengine *engin=new bab_laTranslatorengine(this);
     translator->setEngine(*engin);
     connect(translator,&WordTranslator::translationFinished,
             [this](QString translated){

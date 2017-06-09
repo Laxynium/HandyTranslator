@@ -4,11 +4,11 @@
 #include <translatorengine.h>
 #include <QNetworkAccessManager>
 #include <memory>
-class babLatranslatorengine:public TranslatorEngine
+class bab_laTranslatorengine:public TranslatorEngine
 {
     Q_OBJECT
 public:
-    babLatranslatorengine(QObject *parent=nullptr);
+    bab_laTranslatorengine(QObject *parent=nullptr);
 public slots:
     virtual void  translateWord(QString wordToTranslate)override;
 private:

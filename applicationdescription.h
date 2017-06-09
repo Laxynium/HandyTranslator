@@ -16,7 +16,7 @@ public:
     ~ApplicationDescription();
 
 private:
-    Ui::ApplicationDescription *ui;
+    Ui::ApplicationDescription *ui=nullptr;
 };
 
 #endif // APPLICATIONDESCRIPTION_H

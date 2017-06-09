@@ -4,7 +4,7 @@
 #include <QThread>
 #include <string>
 #include <iostream>
-babLatranslatorengine::babLatranslatorengine(QObject *parent):TranslatorEngine(parent)
+bab_laTranslatorengine::bab_laTranslatorengine(QObject *parent):TranslatorEngine(parent)
 {
     manager.reset(new QNetworkAccessManager);
     connect(manager.get(),&QNetworkAccessManager::finished,
@@ -23,23 +23,23 @@ babLatranslatorengine::babLatranslatorengine(QObject *parent):TranslatorEngine(p
     });
 }
 
-void babLatranslatorengine::translateWord(QString wordToTranslate)
+void bab_laTranslatorengine::translateWord(QString wordToTranslate)
 {
     downloadHtml(createUrl(wordToTranslate));
 }
 
-QString babLatranslatorengine::createUrl(QString wordToTranslate)
+QString bab_laTranslatorengine::createUrl(QString wordToTranslate)
 {
     static const QString base_of_Url="http://pl.bab.la/slownik/angielski-polski/";
     return  base_of_Url+wordToTranslate;
 }
 
-void babLatranslatorengine::downloadHtml(QString url)
+void bab_laTranslatorengine::downloadHtml(QString url)
 {
     manager->get(QNetworkRequest(QUrl(url)));
 }
 
-QString babLatranslatorengine::findTranslatedWords()
+QString bab_laTranslatorengine::findTranslatedWords()
 {
     QString words="";
     QString wholehtml=downloadedHtml;
@@ -54,13 +54,12 @@ QString babLatranslatorengine::findTranslatedWords()
          auto html=wholehtml.mid(begin,end-begin+1+endOfListTag.length());
          words+=getWordsFromList(html);
     }
-
     if(words.isEmpty())return tr("Translation not found\n");
 
     return words;
 }
 
-QString babLatranslatorengine::getWordsFromList(QString html)
+QString bab_laTranslatorengine::getWordsFromList(QString html)
 {
     QString words="";
     const QString endOfTag="</a>";
