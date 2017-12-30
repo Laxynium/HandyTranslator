@@ -4,6 +4,7 @@
 #include <QThread>
 #include <string>
 #include <iostream>
+#include <QDebug>
 bab_laTranslatorengine::bab_laTranslatorengine(QObject *parent):TranslatorEngine(parent)
 {
     manager.reset(new QNetworkAccessManager);
@@ -30,13 +31,16 @@ void bab_laTranslatorengine::translateWord(QString wordToTranslate)
 
 QString bab_laTranslatorengine::createUrl(QString wordToTranslate)
 {
-    static const QString base_of_Url="http://pl.bab.la/slownik/angielski-polski/";
+    static const QString base_of_Url="https://pl.bab.la/slownik/angielski-polski/";
     return  base_of_Url+wordToTranslate;
 }
 
 void bab_laTranslatorengine::downloadHtml(QString url)
 {
-    manager->get(QNetworkRequest(QUrl(url)));
+    QSslConfiguration sslConf(QSslConfiguration::defaultConfiguration());
+    QNetworkRequest request(QUrl{url});
+    request.setSslConfiguration(sslConf);
+    manager->get(request);
 }
 
 QString bab_laTranslatorengine::findTranslatedWords()

@@ -1,0 +1,1 @@
+After build you must copy dlls from catolog DLLs into Realse or Debug folder in order to network request could work.
